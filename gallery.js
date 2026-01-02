@@ -1,6 +1,6 @@
 // Возврат при обновлении
 if (performance.navigation.type === performance.navigation.TYPE_RELOAD) {
-    window.location.href = 'memory.html'; 
+    window.location.href = 'index.html'; 
 }
 
 let openedCount = 0;
@@ -92,4 +92,5 @@ window.onload = function() {
         box.style.top = y + 'px';
         box.style.transform = `rotate(${randomRotate}deg)`;
     });
+
 };
