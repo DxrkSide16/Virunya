@@ -1,0 +1,84 @@
+:root {
+    --bow-sticker: url('bow.png');
+}
+
+.final-body {
+    margin: 0; padding: 0;
+    width: 100vw; height: 100vh;
+    background-color: #ffeef2;
+    overflow: hidden;
+    display: flex; justify-content: center; align-items: center;
+    perspective: 1200px;
+    font-family: 'Marck Script', cursive;
+}
+
+/* --- ГУСТОЙ ФОН (ОБЩИЙ КЛАСС ДЛЯ ВСЕХ ОБЪЕКТОВ) --- */
+.flying-object { /* Изменено с flying-bow */
+    position: absolute;
+    background-size: contain; background-repeat: no-repeat;
+    pointer-events: none; z-index: 1; opacity: 0;
+    animation: objectMagic linear infinite; /* Изменено имя анимации */
+}
+
+@keyframes objectMagic { /* Изменено имя анимации */
+    0% { transform: translate(0, 0) rotate(0deg) scale(0.4); opacity: 0; }
+    20% { opacity: var(--op); }
+    80% { opacity: var(--op); }
+    100% { transform: translate(var(--mx), var(--my)) rotate(var(--rt)) scale(var(--sc)); opacity: 0; }
+}
+
+/* --- ДЕТАЛИЗИРОВАННАЯ БУМАГА --- */
+.paper-wrapper {
+    position: relative;
+    z-index: 10;
+    width: 85%; max-width: 650px;
+    transform: rotateX(5deg) rotateY(-2deg);
+}
+
+.paper {
+    background: #ffffff;
+    background: radial-gradient(circle at 30% 20%, #ffffff 0%, #fdfdfd 50%, #f5f5f5 100%);
+    padding: 60px;
+    border-radius: 40px 15px 50px 20px / 20px 40px 25px 45px;
+    position: relative;
+    box-shadow: 
+        0 5px 15px rgba(0,0,0,0.05),
+        0 20px 40px rgba(0,0,0,0.1),
+        inset 0 0 50px rgba(0,0,0,0.02);
+    border: 1px solid rgba(0,0,0,0.03);
+}
+
+.paper-fiber {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: url('https://www.transparenttextures.com/patterns/natural-paper.png');
+    opacity: 0.6;
+    border-radius: inherit;
+    pointer-events: none;
+}
+
+.paper-highlight {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(135deg, 
+        rgba(255,255,255,0.8) 0%, 
+        transparent 40%, 
+        rgba(0,0,0,0.03) 100%);
+    border-radius: inherit;
+    pointer-events: none;
+}
+
+.paper-content {
+    position: relative;
+    z-index: 5;
+    color: #ff4d6d;
+    font-size: 2rem;
+    line-height: 1.5;
+    text-align: center;
+    filter: contrast(1.1) brightness(0.9);
+}
+
+@media (max-width: 600px) {
+    .paper-content { font-size: 1.4rem; }
+    .paper { padding: 40px 30px; }
+}
