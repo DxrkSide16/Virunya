@@ -1,17 +1,14 @@
-// Возврат при обновлении
 if (performance.navigation.type === performance.navigation.TYPE_RELOAD) {
     window.location.href = 'index.html'; 
 }
 
 let openedCount = 0;
-const totalBoxes = 8; // У нас 8 коробок
+const totalBoxes = 8;
 
 function openBox(element) {
     if (!element.classList.contains('open')) {
         element.classList.add('open');
         openedCount++;
-        
-        // Проверяем, все ли открыты
         if (openedCount === totalBoxes) {
             finishGallery();
         }
@@ -20,40 +17,30 @@ function openBox(element) {
 
 function finishGallery() {
     const title = document.getElementById('gallery-title');
-    
     setTimeout(() => {
-        // 1. Меняем заголовок
         title.style.opacity = '0';
         setTimeout(() => {
             title.innerText = "Умнічкааа ❤️";
             title.style.opacity = '1';
-            title.style.transform = "scale(1.2)";
+            title.style.transform = "scale(1.1)";
         }, 500);
-
-        // 2. Делаем большой финальный взрыв в центре
         createFinalExplosion();
-
-        // 3. Переход на следующую страницу через 3 секунды
         setTimeout(() => {
-            window.location.href = 'final.html'; // Назови так свою следующую страницу
+            window.location.href = 'final.html';
         }, 3000);
     }, 1000);
 }
 
 function createFinalExplosion() {
-    const amount = 100;
-    const colors = ['#ff4d6d', '#ff758f', '#ff85a2', '#ffffff', '#ffd1dc'];
+    const amount = 60;
     const originX = window.innerWidth / 2;
     const originY = window.innerHeight / 2;
-
     for (let i = 0; i < amount; i++) {
         const p = document.createElement('div');
         p.className = 'boom-particle';
-        const moveX = (Math.random() - 0.5) * 800;
-        const moveY = (Math.random() - 0.5) * 800;
-        p.style.setProperty('--x', `${moveX}px`);
-        p.style.setProperty('--y', `${moveY}px`);
-        p.style.background = colors[Math.floor(Math.random() * colors.length)];
+        p.style.setProperty('--x', (Math.random() - 0.5) * 500 + 'px');
+        p.style.setProperty('--y', (Math.random() - 0.5) * 500 + 'px');
+        p.style.background = ['#ff4d6d','#ff758f','#ffffff'][Math.floor(Math.random()*3)];
         p.style.left = originX + 'px';
         p.style.top = originY + 'px';
         document.body.appendChild(p);
@@ -61,11 +48,15 @@ function createFinalExplosion() {
     }
 }
 
-// Разброс коробок при загрузке
 window.onload = function() {
     const boxes = document.querySelectorAll('.gift-box');
-    const positions = []; 
-    const minDistance = 250; 
+    const positions = [];
+    
+    // АДАПТАЦИЯ ПАРАМЕТРОВ ПОД ЭКРАН
+    const isMobile = window.innerWidth < 600;
+    const boxSize = isMobile ? 130 : 220;
+    const minDistance = isMobile ? 140 : 250; // Меньше расстояние для мобилок
+    const topMargin = isMobile ? 100 : 180;  // Меньше отступ от заголовка
 
     boxes.forEach(box => {
         let x, y, collision;
@@ -73,8 +64,9 @@ window.onload = function() {
 
         do {
             collision = false;
-            x = Math.random() * (window.innerWidth - 300) + 50;
-            y = Math.random() * (window.innerHeight - 450) + 200;
+            // Генерируем координаты так, чтобы коробка не уходила за правый и нижний край
+            x = Math.random() * (window.innerWidth - boxSize - 20) + 10;
+            y = Math.random() * (window.innerHeight - boxSize - 100) + topMargin;
 
             for (let pos of positions) {
                 const dist = Math.sqrt(Math.pow(x - pos.x, 2) + Math.pow(y - pos.y, 2));
@@ -84,13 +76,11 @@ window.onload = function() {
                 }
             }
             attempts++;
-        } while (collision && attempts < 150);
+        } while (collision && attempts < 300);
 
         positions.push({x, y});
-        const randomRotate = Math.floor(Math.random() * 40) - 20;
         box.style.left = x + 'px';
         box.style.top = y + 'px';
-        box.style.transform = `rotate(${randomRotate}deg)`;
+        box.style.transform = `rotate(${Math.floor(Math.random() * 30) - 15}deg)`;
     });
-
 };
