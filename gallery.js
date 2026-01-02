@@ -9,6 +9,14 @@ function openBox(element) {
     if (!element.classList.contains('open')) {
         element.classList.add('open');
         openedCount++;
+
+        // ЛОГИКА ДЛЯ МОБИЛЬНЫХ: Исчезновение через 3 секунды
+        if (window.innerWidth < 600) {
+            setTimeout(() => {
+                element.classList.add('fade-out');
+            }, 3000); // 3000 мс = 3 секунды. Можно поменять на 2000 или 4000.
+        }
+
         if (openedCount === totalBoxes) {
             finishGallery();
         }
@@ -51,23 +59,18 @@ function createFinalExplosion() {
 window.onload = function() {
     const boxes = document.querySelectorAll('.gift-box');
     const positions = [];
-    
-    // АДАПТАЦИЯ ПАРАМЕТРОВ ПОД ЭКРАН
     const isMobile = window.innerWidth < 600;
     const boxSize = isMobile ? 130 : 220;
-    const minDistance = isMobile ? 140 : 250; // Меньше расстояние для мобилок
-    const topMargin = isMobile ? 100 : 180;  // Меньше отступ от заголовка
+    const minDistance = isMobile ? 140 : 250;
+    const topMargin = isMobile ? 100 : 180;
 
     boxes.forEach(box => {
         let x, y, collision;
         let attempts = 0;
-
         do {
             collision = false;
-            // Генерируем координаты так, чтобы коробка не уходила за правый и нижний край
             x = Math.random() * (window.innerWidth - boxSize - 20) + 10;
             y = Math.random() * (window.innerHeight - boxSize - 100) + topMargin;
-
             for (let pos of positions) {
                 const dist = Math.sqrt(Math.pow(x - pos.x, 2) + Math.pow(y - pos.y, 2));
                 if (dist < minDistance) {
@@ -77,7 +80,6 @@ window.onload = function() {
             }
             attempts++;
         } while (collision && attempts < 300);
-
         positions.push({x, y});
         box.style.left = x + 'px';
         box.style.top = y + 'px';
