@@ -27,26 +27,24 @@
     transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
-/* КОРОБКА ДЛЯ КОМПЬЮТЕРА */
+/* КОРОБКА */
 .gift-box {
     position: absolute;
     width: 220px; height: 220px;
     cursor: pointer; z-index: 10;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, opacity 0.8s ease; /* Добавили opacity для исчезновения */
 }
 
-/* АДАПТАЦИЯ ПОД МОБИЛЬНЫЕ (Телефоны) */
+/* Исчезновение */
+.gift-box.fade-out {
+    opacity: 0;
+    pointer-events: none;
+}
+
 @media (max-width: 600px) {
-    .main-title {
-        font-size: 2.2rem;
-        top: 20px;
-    }
-    .gift-box {
-        width: 130px; /* Уменьшаем коробки, чтобы не слипались */
-        height: 130px;
-    }
-    .lid { border-radius: 15px !important; }
-    .box-content { border-radius: 15px !important; }
+    .main-title { font-size: 2.2rem; top: 20px; }
+    .gift-box { width: 130px; height: 130px; }
+    .lid, .box-content { border-radius: 15px !important; }
     .ribbon-v { width: 12px !important; }
     .ribbon-h { height: 12px !important; }
     .bow-knot { width: 20px !important; height: 20px !important; }
@@ -95,7 +93,7 @@
 .left-ear { left: -35px; transform: rotate(-40deg); border-radius: 50% 50% 10% 50%; }
 .right-ear { right: -35px; transform: rotate(40deg); border-radius: 50% 50% 50% 10%; }
 
-.gift-box.open { z-index: 80; pointer-events: none; }
+.gift-box.open { z-index: 80; }
 .gift-box.open .lid { transform: translate(100px, 50px) rotate(45deg); opacity: 0; }
 .gift-box.open .inner-photo { opacity: 1; }
 
